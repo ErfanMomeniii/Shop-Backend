@@ -25,13 +25,13 @@ func Create(configdb config.Mysql) (*gorm.DB, error) {
 	sqldb, err := sql.Open("mysql", dbconnect)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 	}
 
 	_, err = sqldb.Exec("CREATE DATABASE " + configdb.Dbname)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 	}
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/authform?charset=%s&parseTime=True&loc=Local",
