@@ -2,7 +2,7 @@ package model
 
 import "time"
 
-type product struct {
+type Product struct {
 	Id         int
 	Name       string
 	Price      string
