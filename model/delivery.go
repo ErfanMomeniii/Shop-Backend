@@ -48,7 +48,7 @@ func (delivery *Delivery) AddDeliveryToDB(db *gorm.DB) error {
 }
 
 func (delivery *Delivery) DeleteDeliveryFromDB(db *gorm.DB) error {
-	err := DeleteDeliveryById(db, delivery.ID)
+	err := DeleteDeliveryById(db, int(delivery.ID))
 
 	if err != nil {
 		log.Error(err)
