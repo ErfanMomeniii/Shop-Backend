@@ -2,8 +2,8 @@ package model
 
 import (
 	validation "github.com/go-ozzo/ozzo-validation"
-	"github.com/go-ozzo/ozzo-validation/is"
 	log "github.com/sirupsen/logrus"
+	"github.com/go-ozzo/ozzo-validation/is"
 	"gorm.io/gorm"
 )
 
@@ -15,15 +15,15 @@ type Delivery struct {
 }
 
 type DeliveryServie interface {
-	validateDelivery() error
-	CreateDelivery(db *gorm.DB) error
-	DeleteDelivery(db *gorm.DB) error
-	UpdateDelivery(updatedDelivery *Delivery, db *gorm.DB) error
+	Validate() error
+	AddDeliveryToDB(db *gorm.DB) error
+	DeleteDeliveryFromDB(db *gorm.DB) error
+	UpdateCompanyInDB(updatedDelivery *Delivery, db *gorm.DB) error
 	ChangeDeliveryRate(newDeliveryRate int, db *gorm.DB) error
 	ChangeScore(newScore float64, db *gorm.DB) error
 }
 
-func (delivery *Delivery) validateDelivery() error {
+func (delivery *Delivery) Validate() error {
 	return validation.ValidateStruct(&delivery,
 		validation.Field(&delivery.User_id, validation.Required),
 		validation.Field(&delivery.Score, is.Float),
@@ -31,8 +31,8 @@ func (delivery *Delivery) validateDelivery() error {
 	)
 }
 
-func (delivery *Delivery) CreateDelivery(db *gorm.DB) error {
-	err := delivery.validateDelivery()
+func (delivery *Delivery) AddDeliveryToDB(db *gorm.DB) error {
+	err := delivery.Validate()
 	if err != nil {
 		return err
 	}
@@ -46,7 +46,7 @@ func (delivery *Delivery) CreateDelivery(db *gorm.DB) error {
 	return nil
 }
 
-func (delivery *Delivery) DeleteDelivery(db *gorm.DB) error {
+func (delivery *Delivery) DeleteDeliveryFromDB(db *gorm.DB) error {
 	err := DeleteDeliveryById(db, delivery.Id)
 
 	if err != nil {
@@ -68,8 +68,8 @@ func DeleteDeliveryById(db *gorm.DB, id int) error {
 	return nil
 }
 
-func (oldDelivery *Delivery) UpdateDelivery(updatedDelivery *Delivery, db *gorm.DB) error {
-	err := updatedDelivery.validateDelivery()
+func (oldDelivery *Delivery) UpdateCompanyInDB(updatedDelivery *Delivery, db *gorm.DB) error {
+	err := updatedDelivery.Validate()
 
 	if err != nil {
 		return err
