@@ -7,10 +7,10 @@ import (
 )
 
 type Company struct {
-	Id      int
+	ID      uint
 	Name    string
 	Address string
-	Tel     []string
+	Tel     string
 }
 
 type CompanyService interface {
@@ -41,8 +41,8 @@ func (company *Company) AddCompanyToDB(db *gorm.DB) error {
 	return nil
 }
 
-func (company *Company)DeleteCompanyFromDB(db *gorm.DB)error{
-	err := DeleteCompanyById(db, company.Id)
+func (company *Company) DeleteCompanyFromDB(db *gorm.DB) error {
+	err := DeleteCompanyById(db, int(company.ID))
 
 	if err != nil {
 		log.Error(err)
@@ -63,7 +63,7 @@ func DeleteCompanyById(db *gorm.DB, id int) error {
 	return nil
 }
 
-func (oldCompany *Company)UpdateCompanyInDB(UpdatedCompany *Company,db *gorm.DB) error{
+func (oldCompany *Company) UpdateCompanyInDB(UpdatedCompany *Company, db *gorm.DB) error {
 	err := UpdatedCompany.Validate()
 
 	if err != nil {

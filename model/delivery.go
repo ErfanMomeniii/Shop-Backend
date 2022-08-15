@@ -2,14 +2,15 @@ package model
 
 import (
 	validation "github.com/go-ozzo/ozzo-validation"
-	log "github.com/sirupsen/logrus"
 	"github.com/go-ozzo/ozzo-validation/is"
+	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
 
 type Delivery struct {
-	Id           int
-	User_id      int
+	ID           uint
+	UserID       int
+	User         User `gorm:"foreignKey:UserID"`
 	Score        float64
 	DeliveryRate int
 }
@@ -25,7 +26,7 @@ type DeliveryServie interface {
 
 func (delivery *Delivery) Validate() error {
 	return validation.ValidateStruct(&delivery,
-		validation.Field(&delivery.User_id, validation.Required),
+		validation.Field(&delivery.UserID, validation.Required),
 		validation.Field(&delivery.Score, is.Float),
 		validation.Field(&delivery.DeliveryRate, is.Int),
 	)
@@ -47,7 +48,7 @@ func (delivery *Delivery) AddDeliveryToDB(db *gorm.DB) error {
 }
 
 func (delivery *Delivery) DeleteDeliveryFromDB(db *gorm.DB) error {
-	err := DeleteDeliveryById(db, delivery.Id)
+	err := DeleteDeliveryById(db, delivery.ID)
 
 	if err != nil {
 		log.Error(err)

@@ -3,9 +3,10 @@ package model
 import "time"
 
 type Product struct {
-	Id         int
+	ID         uint
 	Name       string
 	Price      string
-	Company_id int
+	CompanyID  int
+	Company    Company `gorm:"foreignKey:CompanyID"`
 	Created_At time.Time
 }

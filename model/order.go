@@ -1,6 +1,6 @@
 package model
 
-type Order_situation int
+type OrderSituation int
 
 const (
 	NotStart = iota
@@ -9,9 +9,11 @@ const (
 )
 
 type Order struct {
-	Id          int
-	Products    []int //products_id
-	Delivery_id int
-	Customer_id int
-	Situation   Order_situation
+	ID         uint
+	Products   []int
+	DeliveryID int
+	Delivery   Delivery `gorm:"foreignKey:DeliveryID"`
+	CustomerID int
+	Customer   Customer `gorm:"foreignKey:CustomerID"`
+	Situation  OrderSituation
 }

@@ -11,12 +11,7 @@ import (
 )
 
 func Migrate(db *gorm.DB) {
-	db.AutoMigrate(&model.Company{})
-	db.AutoMigrate(&model.Customer{})
-	db.AutoMigrate(&model.Delivery{})
-	db.AutoMigrate(&model.Order{})
-	db.AutoMigrate(&model.Product{})
-	db.AutoMigrate(&model.User{})
+	db.AutoMigrate(&model.Company{}, &model.Customer{}, &model.Delivery{}, &model.Order{}, &model.Product{}, &model.User{})
 }
 
 func Create(configdb config.Mysql) (*gorm.DB, error) {
